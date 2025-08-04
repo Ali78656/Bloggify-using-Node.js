@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+  <%- include('./partials/head') %>
+  <body>
+    <%- include('./partials/nav') %>
+    <div class="container mt-5 d-flex justify-content-center">
+      <div class="card p-4 shadow-lg" style="max-width: 800px; width: 100%">
+        <h2 class="card-title text-center mb-4">Add New Blog</h2>
+        <% if (typeof error !== 'undefined') { %>
+        <div class="alert alert-danger"><%= error %></div>
+        <% } %>
+        <form action="/blog" method="post" enctype="multipart/form-data">
+          <div class="mb-3">
+            <label for="coverImage" class="form-label">Cover Image</label>
+            <input
+              type="file"
+              class="form-control"
+              id="coverImage"
+              name="coverImage"
+              accept="image/*"
+            />
+          </div>
+          <div class="mb-3">
+            <label for="title" class="form-label">Title</label>
+            <input
+              type="text"
+              class="form-control"
+              id="title"
+              name="title"
+              required
+            />
+          </div>
+          <div class="mb-3">
+            <label for="body" class="form-label">Body</label>
+            <textarea
+              class="form-control"
+              id="body"
+              name="body"
+              rows="10"
+            ></textarea>
+          </div>
+          <button
+            type="submit"
+            class="btn btn-primary w-100"
+            onclick="this.disabled=true;this.form.submit();"
+          >
+            Add Blog
+          </button>
+        </form>
+      </div>
+    </div>
+    <%- include('./partials/script') %>
+  </body>
+</html>
