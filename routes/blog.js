@@ -25,6 +25,35 @@ router.get("/add-new", (req, res) => {
   });
 });
 
+// Delete blog route - must be before /:id route
+router.post("/delete/:id", async (req, res) => {
+  console.log("Delete route hit for blog ID:", req.params.id);
+  // Check if user is authenticated
+  if (!req.user) {
+    return res.redirect("/");
+  }
+
+  const blog = await Blog.findById(req.params.id);
+
+  // Check if blog exists
+  if (!blog) {
+    return res.redirect("/");
+  }
+
+  // Check if user is the owner of the blog
+  if (blog.createdBy.toString() !== req.user.id) {
+    return res.redirect("/");
+  }
+
+  // Delete all comments associated with this blog
+  await Comment.deleteMany({ blodId: req.params.id });
+
+  // Delete the blog
+  await Blog.findByIdAndDelete(req.params.id);
+
+  return res.redirect("/");
+});
+
 router.get("/:id", async (req, res) => {
   const blog = await Blog.findById(req.params.id).populate("createdBy");
   if (!blog) {
